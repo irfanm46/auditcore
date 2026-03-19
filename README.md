@@ -12,8 +12,7 @@
 ---
 
 ## What is AuditCore
-
-AuditCore is a browser-based GRC audit simulation platform where you run real audit engagements from scoping to final report — no installation, no backend, no signup. It covers 15 industry engagements mapped to ISO 27001:2022, NIST CSF 2.0, PCI-DSS v4.0, HIPAA, and GDPR. Every decision you make is scored, every finding you write is graded, every report you export looks like a Big 4 deliverable.
+AuditCore is a browser-based GRC audit simulation platform where you run real audit engagements from scoping to final report — no installation, no backend, no signup. It covers 15 industry engagements mapped to ISO 27001:2022, NIST CSF 2.0, PCI-DSS v4.0, HIPAA, and GDPR. Every decision you make is scored, every finding you write is graded, every report you export is formatted to professional audit standards.
 
 ---
 
