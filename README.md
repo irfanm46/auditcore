@@ -1,110 +1,138 @@
 # AuditCore
 
-**Professional GRC Audit Simulation Platform — Learn by Doing, Not Reading**
+> **The GRC audit simulation platform that turns framework knowledge into audit judgment.**
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Offline](https://img.shields.io/badge/offline-first-darkgreen)
-![Dependencies](https://img.shields.io/badge/dependencies-zero-orange)
+[![Version](https://img.shields.io/badge/version-1.0.0-00aaff?style=flat-square)](https://irfanm46.github.io/auditcore)
+[![Offline](https://img.shields.io/badge/offline-first-00aaff?style=flat-square)](#)
+[![Dependencies](https://img.shields.io/badge/dependencies-zero-00aaff?style=flat-square)](#)
+[![License](https://img.shields.io/badge/license-CC%20BY--NC--ND%204.0-555?style=flat-square)](./LICENSE)
 
-**Live Demo:** [irfanm46.github.io/auditcore](https://irfanm46.github.io/auditcore)
+**[Launch AuditCore →](https://irfanm46.github.io/auditcore)**
 
 ---
 
 ## What is AuditCore
 
-AuditCore is a browser-based GRC audit simulation platform that puts you through the full lifecycle of a real engagement — from scoping to findings to management response — across 15 industries and 5 frameworks.
-
-It is built for GRC analysts, audit associates, and security professionals who need practical, scenario-based experience beyond certification prep. No login, no server, no setup — open the file and start auditing.
+AuditCore is a browser-based GRC audit simulation platform where you run real audit engagements from scoping to final report — no installation, no backend, no signup. It covers 15 industry engagements mapped to ISO 27001:2022, NIST CSF 2.0, PCI-DSS v4.0, HIPAA, and GDPR. Every decision you make is scored, every finding you write is graded, every report you export looks like a Big 4 deliverable.
 
 ---
 
-## Why It Exists
+## The Problem It Solves
 
-Most GRC training stops at theory. You can memorise ISO 27001 Annex A controls or study NIST CSF functions, but nothing in a textbook teaches you how to scope a PCI-DSS engagement, write a credible finding in 4C format, or decide whether to maintain or downgrade a rating after reading a management response.
-
-AuditCore fills that gap by simulating the decisions a junior auditor makes on the floor — through realistic evidence documents, real framework references, and expert feedback on every answer.
+GRC knowledge is widely available. Practical audit judgment is not. Every fresher knows the frameworks — almost none can scope an audit, test a control, rate a risk with justification, or write a finding a CISO would actually read. AuditCore closes that gap by putting you inside a live engagement and making you decide.
 
 ---
 
-## Platform Overview
+## Platform at a Glance
 
-| Component | Count | Detail |
-|---|---|---|
-| Audit Engagements | 15 | Full 7-phase simulations across 5 industries |
-| Frameworks Covered | 5 | ISO 27001:2022, NIST SP 800-53, PCI-DSS v4.0, HIPAA, GDPR |
-| ISO 27001:2022 Controls | 93 | All controls A.5–A.8 with descriptions |
-| Control Testing Challenges | 20 | Domain-based, expert-explained |
-| Risk Scenarios | 25 | With likelihood x impact expert ratings |
-| Toolkit Components | 6 | Risk Matrix, Control Library, Findings Builder, CISA Reference, Framework Mapper, Evidence Checklist |
-| Progression Ranks | 5 | Analyst, Senior Analyst, Lead Auditor, Principal, Partner |
-| Tracked Skills | 6 | Scoping, Control Testing, Risk Assessment, Findings Writing, Compliance Knowledge, Report Quality |
+| Asset | Count |
+|---|---|
+| Audit Engagements | 15 |
+| Industries Covered | 5 |
+| ISO 27001:2022 Controls | 93 |
+| Control Testing Challenges | 20 |
+| Risk Assessment Scenarios | 25 |
+| Frameworks Mapped | 5 |
+| Audit Toolkit Components | 6 |
+| Auditor Ranks | 5 |
 
 ---
 
-## Engagements
+## Engagement List
 
-| Company | Industry | Framework | Key Risk Area |
+| Company | Industry | Framework | Key Risk Focus |
 |---|---|---|---|
-| NexaBank Dubai | Banking | ISO 27001:2022 | Access control, ISMS governance |
-| AlphaFinance UK | Banking | PCI-DSS v4.0 | Cardholder data environment, network segmentation |
-| GulfTrust Bank KSA | Banking | ISO 27001:2022 | Cryptography, third-party vendor risk |
-| MedCore Hospital | Healthcare | HIPAA | ePHI access controls, workforce training |
-| CareLink Clinic | Healthcare | HIPAA | Business Associate Agreements, data encryption |
-| PharmaSafe Pharmaceuticals | Healthcare | HIPAA + FDA 21 CFR Part 11 | Audit trail integrity, computer system validation |
-| GovSec Ministry | Government | NIST SP 800-53 | Privileged access, incident response, patch management |
-| SmartCity Authority | Government | ISO 27001:2022 + NIST CSF | IoT security, OT network segmentation, GDPR |
-| DefenceData Agency | Government | NIST SP 800-53 | Insider threat, supply chain risk, cryptography |
-| RetailX | Retail | PCI-DSS v4.0 + ISO 27001:2022 | PAN storage, CDE segmentation, legacy data |
-| ShopNow Platform | Retail | PCI-DSS v4.0 + GDPR | Consent management, legacy card data, DPAs |
-| LuxuryMart | Retail | GDPR + ISO 27001:2022 | Breach notification, service account security |
-| CloudNine SaaS | Technology | SOC 2 Type II + ISO 27001:2022 | Multi-tenancy isolation, change management, DR |
-| DevSecOps Corp | Technology | ISO 27001:2022 + OWASP | Secure SDLC, production data in dev, SAST coverage |
-| AIStart Innovations | Technology | GDPR + ISO 27001:2022 + EU AI Act | AI bias, automated decision-making, conformity assessment |
+| NexaBank Dubai | Banking | ISO 27001:2022 | Access control, MFA gaps |
+| AlphaFinance UK | Banking | PCI-DSS v4.0 | Cardholder data, third party risk |
+| GulfTrust Bank KSA | Banking | ISO 27001:2022 | ISMS gaps, privileged access |
+| MedCore Hospital | Healthcare | HIPAA | Unencrypted patient data, IR readiness |
+| CareLink Clinic | Healthcare | HIPAA | Credential sharing, access reviews |
+| PharmaSafe Pharmaceuticals | Healthcare | HIPAA + FDA 21 CFR | Data integrity, change management |
+| GovSec Ministry | Government | NIST SP 800-53 | Policy gaps, audit trail failures |
+| SmartCity Authority | Government | ISO 27001 + NIST CSF | IoT infrastructure, asset inventory |
+| DefenceData Agency | Government | NIST SP 800-53 | Classified data handling, access reviews |
+| RetailX Mega Store | Retail | PCI-DSS v4.0 + ISO 27001 | Cardholder data exposure |
+| ShopNow Platform | Retail | PCI-DSS v4.0 + GDPR | API integrations, vendor risk |
+| LuxuryMart | Retail | GDPR + ISO 27001 | Data retention, customer privacy |
+| CloudNine SaaS | Technology | SOC 2 Type II + ISO 27001 | No formal ISMS, rapid growth |
+| DevSecOps Corp | Technology | ISO 27001 + OWASP | CI/CD pipeline, code review gaps |
+| AIStart Innovations | Technology | GDPR + ISO 27001 + AI Act | AI data governance, emerging compliance |
 
 ---
 
-## What You Learn
+## What You Actually Learn
 
-- Run a full audit engagement from scoping to management response, not just individual controls
+- Scope an audit engagement from scratch — define what's in, what's out, and why
+- Test controls using walkthrough, observation, reperformance, and inquiry methods
+- Review evidence packs and identify what's missing before drawing conclusions
+- Rate risks using a likelihood × impact matrix and justify every rating
 - Write findings in Big 4 format: Condition, Criteria, Cause, Effect, Recommendation
-- Identify in-scope versus out-of-scope systems for a given framework and engagement context
-- Rate risks using a 5x5 likelihood x impact matrix and justify your rating against expert analysis
-- Assess controls as Effective, Partially Effective, or Ineffective based on evidence review
-- Evaluate management responses and make defensible maintain, downgrade, or remove decisions
-- Apply ISO 27001:2022, NIST SP 800-53, PCI-DSS v4.0, HIPAA, and GDPR to real-world scenarios
-- Map security domains across multiple frameworks — a core skill for multi-standard engagements
-- Generate professional audit reports in PDF format with structured findings and auditor declaration
+- Handle management pushback and defend your findings under pressure
+- Generate a professional audit report ready for a CISO or board audience
+
+---
+
+## Engagement Engine — 7 Phases
+
+Every engagement runs through the same structure a real audit follows:
+
+```
+Briefing → Scoping → Evidence Review → Control Testing → Findings → Management Response → Completion
+```
+
+Each phase is interactive. Each decision affects your score. Completion unlocks a PDF audit report.
+
+---
+
+## Audit Toolkit
+
+| Tool | What It Does |
+|---|---|
+| Risk Matrix Builder | Plot risks on a live 5×5 likelihood × impact heatmap |
+| Control Library | Search all 93 ISO 27001:2022 controls with implementation guidance |
+| Findings Builder | Structure findings with quality scoring across all 5 components |
+| CISA Domain Reference | All 4 CISA exam domains with control objectives and weightings |
+| Framework Mapper | Map any security domain across ISO 27001, NIST CSF, PCI-DSS, and HIPAA |
+| Evidence Checklist Generator | Input a control, get a complete evidence collection checklist |
+
+---
+
+## Progression System
+
+```
+0–500 XP      Audit Intern
+500–1500 XP   Junior Auditor
+1500–3000 XP  GRC Analyst
+3000–5000 XP  Senior Auditor
+5000+ XP      Audit Partner
+```
+
+Six skills tracked independently: Scoping, Control Testing, Risk Assessment, Findings Writing, Compliance Knowledge, Report Quality.
 
 ---
 
 ## Tech
 
-- Single HTML file — 372 KB, zero build process, works offline out of the box
-- jsPDF v2.5.1 loaded from CDN for professional PDF report and certificate generation
-- Vanilla JavaScript — no frameworks, no npm, no transpilation required
-- localStorage persistence — all progress saved client-side, no account or server needed
-- ES6+ — runs in Chrome, Firefox, Safari, Edge (any modern browser)
+Single HTML file — 372KB. jsPDF for report export. localStorage for persistence. Zero dependencies, zero backend, zero setup. Works offline after first load.
 
 ---
 
-## Screenshots
+## Portfolio
 
-Screenshots coming soon.
+This tool is part of an open portfolio of security tools built for engineers and GRC professionals.
 
----
-
-## Part of the cyber-tools Portfolio
-
-**[annexa](https://github.com/irfanm46/annexa)** — ISO 27001:2022 Engineer Toolkit. Compliance heatmap, risk register, SoA generator, controls guide, threat mapper, and 2013-to-2022 diff tool. Live at [irfanm46.github.io/annexa](https://irfanm46.github.io/annexa).
-
-**netkill** — Network security reference and analysis tool. Coming soon.
+| Tool | Domain | Link |
+|---|---|---|
+| annexa | ISO 27001:2022 compliance toolkit — heatmap, risk register, SoA generator, evidence wizard | [irfanm46.github.io/annexa](https://irfanm46.github.io/annexa) |
+| NetKill | Browser-based network attack simulation lab — 27 offensive scenarios, MITRE ATT&CK mapped | [irfanm46.github.io/netkill](https://irfanm46.github.io/netkill) |
+| AuditCore | GRC audit simulation platform — 15 engagements, 5 frameworks, Big 4 report export | [irfanm46.github.io/auditcore](https://irfanm46.github.io/auditcore) |
 
 ---
 
-AUDITCORE v1.0.0 · Offline-First · Zero Dependencies · Educational Use Only
+## License
 
-© 2025 Irfan M — All Rights Reserved
-Licensed under CC BY-NC-ND 4.0
-Use via irfanm46.github.io/auditcore only
-Downloading, copying, or modifying this tool is not permitted
+© 2025 Irfan M. All rights reserved. Use via [irfanm46.github.io/auditcore](https://irfanm46.github.io/auditcore) only. Downloading, copying, or modifying this tool is not permitted. See [LICENSE](./LICENSE).
+
+---
+
+`AUDITCORE v1.0.0 · Offline-First · Zero Dependencies · Educational Use Only. © 2025 Irfan M`
