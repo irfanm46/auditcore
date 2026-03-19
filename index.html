@@ -3943,82 +3943,26 @@ function drawSkillRadar(){
   ctx.closePath();ctx.fill();ctx.stroke();
 }
 
-// ── NAVIGATION ────────────────────────────────────────────────────
-function nav(view){
-  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
-  document.querySelectorAll('.view').forEach(el=>el.style.display='none');
-  document.getElementById('view-'+view).style.display='block';
-  const navEl=document.querySelector(`[data-view="${view}"]`);
-  if(navEl) navEl.classList.add('active');
-  S.currentView=view;
-  if(view==='dashboard') renderDashboard();
-  else if(view==='engagements'){renderEngList();}
-  else if(view==='controls') renderCtrlList();
-  else if(view==='risk') renderRiskList();
-  else if(view==='toolkit') renderToolkit();
-  else if(view==='reports') renderReports();
-  else if(view==='pro') renderPro();
-}
-
-// ── PROFILE MANAGEMENT ────────────────────────────────────────────
-function createProfile(){
-  const name=document.getElementById('setupName')?.value?.trim();
-  const firm=document.getElementById('setupFirm')?.value?.trim()||'Independent';
-  const exp=document.getElementById('setupExp')?.value||'0-1';
-  if(!name){alert('Please enter your name.');return;}
-  S.profile={name,firm,exp,created:new Date().toISOString()};
-  S.activity.push({txt:`Welcome, ${name}! AuditCore profile created.`,t:new Date().toISOString()});
-  save();
-  document.getElementById('setupModal').style.display='none';
-  document.getElementById('app').style.display='flex';
-  document.getElementById('profileName').textContent=name;
-  document.getElementById('profileFirm').textContent=firm;
-  renderDashboard();
-  nav('dashboard');
-}
-
-function editProfile(){
-  const modal=document.getElementById('editModal');
-  document.getElementById('editName').value=S.profile?.name||'';
-  document.getElementById('editFirm').value=S.profile?.firm||'';
-  modal.style.display='flex';
-}
-
-function saveProfile(){
-  S.profile.name=document.getElementById('editName')?.value?.trim()||S.profile.name;
-  S.profile.firm=document.getElementById('editFirm')?.value?.trim()||S.profile.firm;
-  document.getElementById('profileName').textContent=S.profile.name;
-  document.getElementById('profileFirm').textContent=S.profile.firm;
-  save();
-  document.getElementById('editModal').style.display='none';
-  renderDashboard();
-}
-
 // ── INIT ──────────────────────────────────────────────────────────
 window.addEventListener('load',()=>{
   load();
   // Keyboard shortcuts
   document.addEventListener('keydown',(e)=>{
     if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT') return;
-    const map={d:'dashboard',e:'engagements',c:'controls',r:'risk',t:'toolkit',p:'pro','?':'shortcuts'};
+    const map={d:'dashboard',e:'engagements',c:'controls',r:'risk',t:'toolkit',p:'reports',x:'pro'};
     if(map[e.key]) nav(map[e.key]);
   });
   if(S.profile){
     document.getElementById('setupModal').style.display='none';
-    document.getElementById('app').style.display='flex';
-    document.getElementById('profileName').textContent=S.profile.name;
-    document.getElementById('profileFirm').textContent=S.profile.firm;
-    renderDashboard();
     nav('dashboard');
   } else {
     document.getElementById('setupModal').style.display='flex';
-    document.getElementById('app').style.display='none';
   }
 });
 
 // Make all functions globally accessible
 window.AC={
-  nav,createProfile,editProfile,saveProfile,
+  nav,createProfile,openEdit,closeEdit,saveEdit,
   startEngagement,backToEngList,advancePhase,
   submitScoping,markEvidReviewed,toggleEvidence,
   submitCtrl,selectRating,submitFinding,toggleFinding,
