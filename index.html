@@ -2801,43 +2801,29 @@ const CHALLENGES=[
 ];
 
 function renderCtrlList(){
-  const filter=document.getElementById('ctrlFilter')?document.getElementById('ctrlFilter').value:'all';
-  const html=`
-  <div class="eng-header">
-    <h2>Control Testing Lab</h2>
-    <p class="sub">Test your control assessment skills with realistic scenarios drawn from Big 4 engagements</p>
-    <div class="filter-row">
-      <label>Domain:</label>
-      <select id="ctrlFilter" onchange="renderCtrlList()">
-        <option value="all">All Domains</option>
-        <option value="Access Control">Access Control</option>
-        <option value="Change Management">Change Management</option>
-        <option value="Incident Response">Incident Response</option>
-        <option value="Network Security">Network Security</option>
-        <option value="Data Protection">Data Protection</option>
-        <option value="Cryptography">Cryptography</option>
-        <option value="Vulnerability Management">Vulnerability Management</option>
-        <option value="Third-Party Risk">Third-Party Risk</option>
-      </select>
-    </div>
-  </div>
-  <div class="grid-3">
-    ${CHALLENGES.filter(c=>filter==='all'||c.domain===filter).map(c=>{
-      const done=S.ctrlDone&&S.ctrlDone[c.id];
-      return `<div class="card challenge-card" onclick="startChallenge('${c.id}')">
-        <div class="challenge-badges">
-          <span class="badge badge-domain">${c.domain}</span>
-          <span class="badge badge-diff-${c.difficulty.toLowerCase()}">${c.difficulty}</span>
-        </div>
-        <h3>${c.title}</h3>
-        <p style="color:var(--text-dim);font-size:13px">${c.scenario.substring(0,100)}...</p>
-        ${done?`<div class="challenge-result ${done.correct?'result-correct':'result-wrong'}">${done.correct?'✓ Correct (+20 XP)':'✗ Review answer'}</div>`:'<div class="challenge-start">Click to attempt →</div>'}
-      </div>`;
-    }).join('')}
-  </div>`;
-  document.getElementById('ctrlContent').innerHTML=html;
+  const DOMAINS=['Access Control','Change Management','Incident Response','Network Security','Data Protection','Cryptography','Vulnerability Management','Third-Party Risk'];
   const sel=document.getElementById('ctrlFilter');
-  if(sel) sel.value=filter;
+  const filter=sel?sel.value:'all';
+  document.getElementById('ctrlTabs').innerHTML=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:4px 0">
+    <span style="color:var(--text-dim);font-size:13px">Domain:</span>
+    <select id="ctrlFilter" onchange="AC.renderCtrlList()" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:4px;font-size:13px">
+      <option value="all">All Domains</option>
+      ${DOMAINS.map(d=>`<option value="${d}" ${filter===d?'selected':''}>${d}</option>`).join('')}
+    </select>
+    <span style="color:var(--text-dim);font-size:13px;margin-left:auto">${Object.keys(S.ctrlDone||{}).length} / ${CHALLENGES.length} completed</span>
+  </div>`;
+  document.getElementById('challGrid').innerHTML=CHALLENGES.filter(c=>filter==='all'||c.domain===filter).map(c=>{
+    const done=S.ctrlDone&&S.ctrlDone[c.id];
+    return `<div class="card challenge-card" onclick="AC.startChallenge('${c.id}')">
+      <div class="challenge-badges">
+        <span class="badge badge-domain">${c.domain}</span>
+        <span class="badge badge-diff-${c.difficulty.toLowerCase()}">${c.difficulty}</span>
+      </div>
+      <h3>${c.title}</h3>
+      <p style="color:var(--text-dim);font-size:13px">${c.scenario.substring(0,100)}...</p>
+      ${done?`<div class="challenge-result ${done.correct?'result-correct':'result-wrong'}">${done.correct?'✓ Correct (+20 XP)':'✗ Review answer'}</div>`:'<div class="challenge-start">Click to attempt →</div>'}
+    </div>`;
+  }).join('');
 }
 
 let _currentChallenge=null;
@@ -2845,8 +2831,9 @@ function startChallenge(id){
   _currentChallenge=id;
   const c=CHALLENGES.find(ch=>ch.id===id);
   const done=S.ctrlDone&&S.ctrlDone[id];
-  document.getElementById('ctrlContent').innerHTML=`
-  <button class="btn-back" onclick="renderCtrlList()">← Back to Challenges</button>
+  document.getElementById('ctrlList').style.display='none';
+  document.getElementById('ctrlPanel').style.display='block';
+  document.getElementById('ctrlPanelContent').innerHTML=`
   <div class="challenge-detail">
     <div class="card">
       <div class="challenge-badges">
@@ -2863,7 +2850,7 @@ function startChallenge(id){
         ${c.options.map((opt,i)=>{
           let cls='btn-option';
           if(done){cls+=i===c.correct?' correct-option':i===done.selected?' wrong-option':'';}
-          return `<button class="btn-option ${cls}" onclick="${done?'':'submitChallenge('+i+')'}" ${done?'disabled':''}>${opt}</button>`;
+          return `<button class="btn-option ${cls}" onclick="${done?'':'AC.submitChallenge('+i+')'}" ${done?'disabled':''}>${opt}</button>`;
         }).join('')}
       </div>
       ${done?`<div class="challenge-explanation ${done.correct?'exp-correct':'exp-wrong'}">
@@ -2872,6 +2859,12 @@ function startChallenge(id){
       </div>`:''}
     </div>
   </div>`;
+}
+
+function backToCtrlList(){
+  document.getElementById('ctrlPanel').style.display='none';
+  document.getElementById('ctrlList').style.display='block';
+  renderCtrlList();
 }
 
 function submitChallenge(selected){
@@ -2920,29 +2913,22 @@ const RISK_SCENARIOS=[
 ];
 
 function renderRiskList(){
-  const filter=document.getElementById('riskFilter')?document.getElementById('riskFilter').value:'all';
   const cats=['Cybersecurity','Operational','Compliance','Third Party','Emerging Tech'];
-  const html=`
-  <div class="eng-header">
-    <h2>Risk Assessment Lab</h2>
-    <p class="sub">Assess likelihood and impact for each risk scenario. Compare your rating with expert analysis.</p>
-    <div class="filter-row">
-      <label>Category:</label>
-      <select id="riskFilter" onchange="renderRiskList()">
-        <option value="all">All Categories</option>
-        ${cats.map(c=>`<option value="${c}">${c}</option>`).join('')}
-      </select>
-    </div>
-  </div>
-  <div class="risk-stats">
-    <div class="stat-item"><span>${Object.keys(S.riskDone||{}).length}</span>Assessed</div>
-    <div class="stat-item"><span>${RISK_SCENARIOS.length-Object.keys(S.riskDone||{}).length}</span>Remaining</div>
-  </div>
-  <div class="grid-3">
+  const sel=document.getElementById('riskFilter');
+  const filter=sel?sel.value:'all';
+  const riskTabs=document.getElementById('riskTabs');
+  if(riskTabs) riskTabs.innerHTML=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:4px 0">
+    <span style="color:var(--text-dim);font-size:13px">Category:</span>
+    <select id="riskFilter" onchange="AC.renderRiskList()" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:4px;font-size:13px">
+      <option value="all" ${filter==='all'?'selected':''}>All Categories</option>
+      ${cats.map(c=>`<option value="${c}" ${filter===c?'selected':''}>${c}</option>`).join('')}
+    </select>
+    <span style="color:var(--text-dim);font-size:13px;margin-left:auto">${Object.keys(S.riskDone||{}).length} / ${RISK_SCENARIOS.length} assessed</span>
+  </div>`;
+  document.getElementById('riskList').innerHTML=`<div class="grid-3">
     ${RISK_SCENARIOS.filter(r=>filter==='all'||r.cat===filter).map(r=>{
       const done=S.riskDone&&S.riskDone[r.id];
-      const score=done?Math.max(0,5-Math.abs(done.l-r.expertL)+Math.abs(done.i-r.expertI)):0;
-      return `<div class="card risk-card" onclick="startRisk('${r.id}')">
+      return `<div class="card risk-card" onclick="AC.startRisk('${r.id}')">
         <span class="badge badge-cat">${r.cat}</span>
         <h3>${r.title}</h3>
         <p style="color:var(--text-dim);font-size:13px">${r.context.substring(0,100)}...</p>
@@ -2954,9 +2940,6 @@ function renderRiskList(){
       </div>`;
     }).join('')}
   </div>`;
-  document.getElementById('riskContent').innerHTML=html;
-  const sel=document.getElementById('riskFilter');
-  if(sel) sel.value=filter;
 }
 
 let _currentRisk=null;
@@ -2964,7 +2947,7 @@ function startRisk(id){
   _currentRisk=id;
   const r=RISK_SCENARIOS.find(x=>x.id===id);
   const done=S.riskDone&&S.riskDone[id];
-  document.getElementById('riskContent').innerHTML=`
+  document.getElementById('riskList').innerHTML=`
   <button class="btn-back" onclick="renderRiskList()">← Back to Risk Lab</button>
   <div class="risk-detail">
     <div class="card">
@@ -3132,38 +3115,33 @@ const ISO_CONTROLS=[
 
 // ── TOOLKIT FUNCTIONS ─────────────────────────────────────────────
 function renderToolkit(){
-  const tab=document.getElementById('tkTab')?document.getElementById('tkTab').value:'risk';
-  const tabs=[
-    {id:'risk',label:'Risk Matrix'},
-    {id:'controls',label:'Control Library'},
-    {id:'findings',label:'Findings Builder'},
-    {id:'cisa',label:'CISA Reference'},
-    {id:'mapper',label:'Framework Mapper'},
-    {id:'evidence',label:'Evidence Checklist'}
-  ];
-  document.getElementById('tkTabs').innerHTML=tabs.map(t=>
-    `<button class="tab-btn ${tab===t.id?'active':''}" onclick="switchTkTab('${t.id}')">${t.label}</button>`
-  ).join('');
-  if(tab==='risk') renderRiskMatrix();
-  else if(tab==='controls') renderCtrlLibrary();
-  else if(tab==='findings') renderFindingsBuilder();
-  else if(tab==='cisa') renderCISA();
-  else if(tab==='mapper') renderMapper();
-  else if(tab==='evidence') renderEvidenceChecklist();
+  // Ensure first tab pane is active and populated
+  document.querySelectorAll('#view-toolkit .tab-pane').forEach((p,i)=>{
+    p.classList.toggle('active',i===0);
+  });
+  document.querySelectorAll('#toolkitTabs .tab').forEach((b,i)=>{
+    b.classList.toggle('active',i===0);
+  });
+  renderRiskMatrix();
 }
 
-function switchTkTab(tab){
-  if(!document.getElementById('tkTab')){
-    const h=document.createElement('input');h.type='hidden';h.id='tkTab';document.body.appendChild(h);
-  }
-  document.getElementById('tkTab').value=tab;
-  renderToolkit();
+function toolTab(el, paneId){
+  document.querySelectorAll('#view-toolkit .tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById(paneId).classList.add('active');
+  document.querySelectorAll('#toolkitTabs .tab').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  if(paneId==='tk-matrix') renderRiskMatrix();
+  else if(paneId==='tk-controls') renderCtrlLibrary();
+  else if(paneId==='tk-findings') renderFindingsBuilder();
+  else if(paneId==='tk-cisa') renderCISA();
+  else if(paneId==='tk-mapper') renderMapper();
+  else if(paneId==='tk-checklist') renderEvidenceChecklist();
 }
 
 function renderRiskMatrix(){
   if(!S.toolkit) S.toolkit={risks:[]};
   if(!S.toolkit.risks) S.toolkit.risks=[];
-  document.getElementById('tkContent').innerHTML=`
+  document.getElementById('tk-matrix').innerHTML=`
   <div class="toolkit-section">
     <h3>Risk Matrix Builder</h3>
     <div class="card risk-form">
@@ -3215,8 +3193,8 @@ function addRisk(){
   const name=document.getElementById('riskName')?.value?.trim();
   if(!name){alert('Please enter a risk name.');return;}
   const cat=document.getElementById('riskCat')?.value;
-  const l=parseInt(document.querySelector('#tkContent input[type=range]:nth-of-type(1)')?.value||3);
-  const i=parseInt(document.querySelector('#tkContent input[type=range]:nth-of-type(2)')?.value||3);
+  const l=parseInt(document.querySelector('#tk-matrix input[type=range]:nth-of-type(1)')?.value||3);
+  const i=parseInt(document.querySelector('#tk-matrix input[type=range]:nth-of-type(2)')?.value||3);
   if(!S.toolkit) S.toolkit={risks:[]};
   if(!S.toolkit.risks) S.toolkit.risks=[];
   S.toolkit.risks.push({name,cat,l,i});
@@ -3238,7 +3216,7 @@ function renderCtrlLibrary(){
     const matchClause=clause==='all'||c.clause===clause;
     return matchSearch&&matchClause;
   });
-  document.getElementById('tkContent').innerHTML=`
+  document.getElementById('tk-controls').innerHTML=`
   <div class="toolkit-section">
     <h3>ISO 27001:2022 Control Library</h3>
     <div class="search-row">
@@ -3265,7 +3243,7 @@ function renderCtrlLibrary(){
 }
 
 function renderFindingsBuilder(){
-  document.getElementById('tkContent').innerHTML=`
+  document.getElementById('tk-findings').innerHTML=`
   <div class="toolkit-section">
     <h3>Findings Quality Builder</h3>
     <p style="color:var(--text-dim);margin-bottom:16px">Use the 4C format: Condition, Criteria, Cause, Effect + Recommendation. Quality score updates in real-time.</p>
@@ -3307,7 +3285,7 @@ function scoreFinding(){
 }
 
 function renderCISA(){
-  document.getElementById('tkContent').innerHTML=`
+  document.getElementById('tk-cisa').innerHTML=`
   <div class="toolkit-section">
     <h3>CISA CRISC Exam Reference</h3>
     <div class="cisa-grid">
@@ -3362,7 +3340,7 @@ function renderMapper(){
     ['BCM','A.5.29-30','CP-2, CP-4','Req 12.10','BIA, BCP, testing, DR'],
     ['Compliance','A.5.31-36','CA-2, CA-7','Req 12','Audits, assessments, legal obligations']
   ];
-  document.getElementById('tkContent').innerHTML=`
+  document.getElementById('tk-mapper').innerHTML=`
   <div class="toolkit-section">
     <h3>Framework Mapper — ISO 27001 ↔ NIST SP 800-53 ↔ PCI-DSS v4.0</h3>
     <div class="mapper-table-wrap">
@@ -3377,7 +3355,7 @@ function renderMapper(){
 }
 
 function renderEvidenceChecklist(){
-  document.getElementById('tkContent').innerHTML=`
+  document.getElementById('tk-checklist').innerHTML=`
   <div class="toolkit-section">
     <h3>Evidence Checklist Generator</h3>
     <p style="color:var(--text-dim);margin-bottom:16px">Select an ISO 27001:2022 control to generate a standard evidence collection checklist.</p>
@@ -3618,30 +3596,26 @@ function createModal(id){
 
 // ── PRO FEATURES ──────────────────────────────────────────────────
 function renderPro(){
-  const tab=document.getElementById('proTab')?document.getElementById('proTab').value:'progress';
-  const tabs=[
-    {id:'progress',label:'Progress Overview'},
-    {id:'comparison',label:'Comparison'},
-    {id:'skillgap',label:'Skill Gap'},
-    {id:'certs',label:'Certificates'},
-    {id:'data',label:'Data Management'}
-  ];
-  document.getElementById('proTabs').innerHTML=tabs.map(t=>
-    `<button class="tab-btn ${tab===t.id?'active':''}" onclick="switchProTab('${t.id}')">${t.label}</button>`
-  ).join('');
-  if(tab==='progress') renderProProgress();
-  else if(tab==='comparison') renderProComparison();
-  else if(tab==='skillgap') renderProSkillGap();
-  else if(tab==='certs') renderProCerts();
-  else if(tab==='data') renderProData();
+  // Ensure first tab pane is active and populated
+  document.querySelectorAll('#view-pro .tab-pane').forEach((p,i)=>{
+    p.classList.toggle('active',i===0);
+  });
+  document.querySelectorAll('#view-pro .tabs .tab').forEach((b,i)=>{
+    b.classList.toggle('active',i===0);
+  });
+  renderProProgress();
 }
 
-function switchProTab(tab){
-  if(!document.getElementById('proTab')){
-    const h=document.createElement('input');h.type='hidden';h.id='proTab';document.body.appendChild(h);
-  }
-  document.getElementById('proTab').value=tab;
-  renderPro();
+function proTab(el, paneId){
+  document.querySelectorAll('#view-pro .tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById(paneId).classList.add('active');
+  document.querySelectorAll('#view-pro .tabs .tab').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  if(paneId==='pr-progress') renderProProgress();
+  else if(paneId==='pr-compare') renderProComparison();
+  else if(paneId==='pr-skills') renderProSkillGap();
+  else if(paneId==='pr-certs') renderProCerts();
+  else if(paneId==='pr-data') renderProData();
 }
 
 function renderProProgress(){
@@ -3649,7 +3623,7 @@ function renderProProgress(){
   const done=engIds.filter(id=>S.engStates[id]?.phase>=7);
   const started=engIds.filter(id=>S.engStates[id]?.phase>0&&S.engStates[id]?.phase<7);
   const pct=Math.round(done.length/engIds.length*100);
-  document.getElementById('proContent').innerHTML=`
+  document.getElementById('pr-progress').innerHTML=`
   <div class="pro-section">
     <div class="pro-header-stats">
       <div class="stat-card"><div class="stat-num">${done.length}/${engIds.length}</div><div>Engagements Complete</div></div>
@@ -3680,7 +3654,7 @@ function renderProProgress(){
 
 function renderProComparison(){
   const completed=Object.entries(S.engStates||{}).filter(([,es])=>es.phase>=7);
-  document.getElementById('proContent').innerHTML=`
+  document.getElementById('pr-compare').innerHTML=`
   <div class="pro-section">
     <h3>Engagement Score Comparison</h3>
     ${completed.length===0?'<p style="color:var(--text-dim)">Complete at least one engagement to see comparison.</p>':
@@ -3722,7 +3696,7 @@ function renderProComparison(){
 }
 
 function renderProSkillGap(){
-  document.getElementById('proContent').innerHTML=`
+  document.getElementById('pr-skills').innerHTML=`
   <div class="pro-section">
     <h3>Skill Gap Analysis</h3>
     <div class="skill-gap-grid">
@@ -3749,7 +3723,7 @@ function renderProSkillGap(){
 
 function renderProCerts(){
   const eligible=Object.entries(S.engStates||{}).filter(([,es])=>es.phase>=7&&es.score>=70);
-  document.getElementById('proContent').innerHTML=`
+  document.getElementById('pr-certs').innerHTML=`
   <div class="pro-section">
     <h3>Certificates</h3>
     ${eligible.length===0?'<p style="color:var(--text-dim)">Complete an engagement with 70%+ score to earn a certificate.</p>':
@@ -3770,7 +3744,7 @@ function renderProCerts(){
 }
 
 function renderProData(){
-  document.getElementById('proContent').innerHTML=`
+  document.getElementById('pr-data').innerHTML=`
   <div class="pro-section">
     <h3>Data Management</h3>
     <div class="grid-2">
@@ -3831,7 +3805,7 @@ function resetData(){
 // ── RENDER ALL VIEWS ──────────────────────────────────────────────
 function renderReports(){
   const completed=Object.entries(S.engStates||{}).filter(([,es])=>es.phase>=7);
-  document.getElementById('reportsContent').innerHTML=`
+  document.getElementById('reportsList').innerHTML=`
   <h2>Audit Reports</h2>
   <p class="sub">Generate professional PDF reports for completed engagements</p>
   ${completed.length===0?'<div class="card"><p style="color:var(--text-dim)">Complete an engagement to generate a PDF report.</p></div>':
@@ -3967,12 +3941,13 @@ window.AC={
   submitScoping,markEvidReviewed,toggleEvidence,
   submitCtrl,selectRating,submitFinding,toggleFinding,
   submitMgmtResponse,completeEngagement,
-  startChallenge,submitChallenge,
+  startChallenge,submitChallenge,backToCtrlList,
   startRisk,submitRisk,updateRiskMatrix,
   addRisk,removeRisk,renderCtrlLibrary,renderFindingsBuilder,
-  generateEvidChecklist,printChecklist,scoreFinding,switchTkTab,
+  generateEvidChecklist,printChecklist,scoreFinding,
+  toolTab,proTab,
   exportEngagementPDF,generateCertPDF,showCertificate,
-  switchProTab,exportData,importData,resetData,
+  exportData,importData,resetData,
   renderEngList,renderCtrlList,renderRiskList,renderToolkit,renderPro,renderReports
 };
 
