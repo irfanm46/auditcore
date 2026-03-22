@@ -16,7 +16,7 @@ AuditCore is a browser-based GRC audit simulation platform where you run real au
 
 ---
 
-## The Problem It Solves
+## The Problem It Solves 
 
 GRC knowledge is widely available. Practical audit judgment is not. Every fresher knows the frameworks — almost none can scope an audit, test a control, rate a risk with justification, or write a finding a CISO would actually read. AuditCore closes that gap by putting you inside a live engagement and making you decide.
 
